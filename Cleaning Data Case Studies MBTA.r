@@ -1,0 +1,22 @@
+setwd('C:\Users\Adrian\Documents\Data_Journalism\Datacamp Lesson Datafiles')
+library(readxl)
+mbta <- read_excel('mbta.xlsx', skip = 1)
+str(mbta)
+head(mbta)
+summary(mbta)
+mbta2 <- mbta[-c(1, 7, 11),]
+mbta3 <- mbta2[, -1]
+library(tidyr)
+mbta4 <- gather(mbta3, "month", "thou_riders", -mode)
+head(mbta4)
+mbta4$thou_riders <- as.numeric(mbta4$thou_riders)
+mbta5 <- spread(mbta4, mode, thou_riders)
+head(mbta5)
+mbta6 <- separate(mbta5, month, c("year", "month"), sep = "-")
+head(mbta6)
+summary(mbta6)
+hist(mbta6$Boat)
+i <- which(mbta6$Boat > 30)
+mbta6$Boat[i] <- 4
+library(ggplot2)
+hist(mbta6$Boat)
